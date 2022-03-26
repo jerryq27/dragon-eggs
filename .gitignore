@@ -4,3 +4,25 @@ __pycache__
 .hypothesis/
 build/
 reports/
+
+# dependencies
+dragoneggs-frontend/node_modules
+dragoneggs-frontend/.pnp
+dragoneggs-frontend/.pnp.js
+
+# testing
+dragoneggs-frontend/coverage
+
+# production
+dragoneggs-frontend/build
+
+# misc
+dragoneggs-frontend/.DS_Store
+dragoneggs-frontend/.env.local
+dragoneggs-frontend/.env.development.local
+dragoneggs-frontend/.env.test.local
+dragoneggs-frontend/.env.production.local
+
+dragoneggs-frontend/npm-debug.log*
+dragoneggs-frontend/yarn-debug.log*
+dragoneggs-frontend/yarn-error.log*
