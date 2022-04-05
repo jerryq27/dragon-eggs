@@ -1,6 +1,16 @@
 import os
 from PIL import Image
 
+# 5 layers x 5 options
+# Use 5 (0-4) digits to determine which option to use
+# Make sure they are unique by adding them to a dictionary
+
+dragon_eggs = {}
+egg_metadata = {
+    "": "",
+    "": "",
+}
+
 
 def create_collectable():
     img_path = os.path.join(os.getcwd(), 'metadata', 'img')
