@@ -4,6 +4,7 @@ __pycache__
 .hypothesis/
 build/
 reports/
+.vscode/
 
 # dependencies
 dragoneggs-frontend/node_modules
