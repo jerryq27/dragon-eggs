@@ -1,10 +1,11 @@
 import os
 from PIL import Image
 
-# 5 layers x 5 options
+# 5 layers x 5 options (color, pattern, background, gloss position, (rare) has crack)
 # Use 5 (0-4) digits to determine which option to use
 # Make sure they are unique by adding them to a dictionary
 
+COLLECTION_SIZE = 100
 dragon_eggs = {}
 egg_metadata = {
     "": "",
@@ -12,20 +13,34 @@ egg_metadata = {
 }
 
 
-def create_collectable():
+def generate_collection():
+    # [0-4][0-4][0-4][0-4?]
+    for i in range(COLLECTION_SIZE):
+        print(i)
+
+
+def calculate_sequence():
+    pass
+
+
+def create_collectible(sequence):
     img_path = os.path.join(os.getcwd(), 'metadata', 'img')
-    layers = [Image.open(x) for x in [
-        os.path.join(img_path, 'base.png'),
-        os.path.join(img_path, 'pattern.png')
-    ]]
+    collectibles_path = os.path.join(img_path, 'collectibles')
+    if not os.path.exists(collectibles_path):
+        os.mkdir(collectibles_path)
 
-    print('Generating NFT...')
-    collectible = layers[0]
-    for layer in layers[1:]:
-        collectible.paste(layer, (0, 0), layer)
+    # layers = [Image.open(x) for x in [
+    #     os.path.join(img_path, 'base.png'),
+    #     os.path.join(img_path, 'pattern.png')
+    # ]]
 
-    collectible.save(os.path.join(img_path, 'collectible.png'), 'PNG')
+    # print('Generating NFT...')
+    # collectible = layers[0]
+    # for layer in layers[1:]:
+    #     collectible.paste(layer, (0, 0), layer)
+
+    # collectible.save(os.path.join(collectibles_path, 'collectible.png'), 'PNG')
     print('Done!')
 
 
-create_collectable()
+generate_collection()
