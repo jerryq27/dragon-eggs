@@ -4,23 +4,11 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Header from './components/Header';
 import Body from './components/Body';
 
-// const useStyles = makeStyles({
-//     app: {},
-//     header: {},
-//     body: {
-//         padding: 50,
-//     }
-// })
-
 const useStyles = makeStyles((theme: Theme) => createStyles({
-    app: {},
-    header: {},
-    body: {
-        maxWidth: '75%',
-        margin: 'auto 0 auto',
-        marginTop: '25%',
-        textAlign: 'center'
-    }
+    app: {
+        alignItems: 'center',
+        // justifyContent: 'center',
+    },
 }));
 
 function App() {
@@ -30,8 +18,8 @@ function App() {
 
     return (
         <div className={classes.app}>
-            <Header css={classes.header} />
-            <Body css={classes.body} onClick={() => setName('Jerry')} />
+            <Header />
+            <Body onClick={() => setName('Jerry')} />
             <span>
                 {name}
             </span>
