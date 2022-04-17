@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     app: {
         alignItems: 'center',
     },
-    nowallet: {
+    walletless: {
         maxWidth: '40%',
         margin: '0 auto',
     }
@@ -35,7 +35,7 @@ function App() {
     }
     else {
         return (
-            <Card className={classes.nowallet}>
+            <Card className={classes.walletless}>
                 <CardContent style={{ textAlign: 'center' }}>
                     <Typography>No wallet detected.</Typography>
                 </CardContent>

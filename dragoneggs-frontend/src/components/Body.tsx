@@ -10,7 +10,7 @@ import {
     createStyles,
     Theme,
 } from '@material-ui/core';
-import BlankEgg from '../img/question-egg.png'
+import BlankEgg from '../img/question-egg.png';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     body: {
@@ -55,7 +55,7 @@ function Body(props: BodyProps) {
                         onClick={() => onClick()}
                         variant='outlined'
                         color='primary'>
-                        Click Me!
+                        Mint Egg
                     </Button>
                 </CardActions>
             </Card>
