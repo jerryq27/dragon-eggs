@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Button,
     Card,
@@ -36,7 +36,7 @@ type BodyProps = {
 }
 
 function Body(props: BodyProps) {
-    const { onClick } = props;
+    const [loading, setLoading] = useState(false);
     const classes = useStyles();
 
     return (
@@ -52,7 +52,7 @@ function Body(props: BodyProps) {
 
                 <CardActions className={classes.controls}>
                     <Button
-                        onClick={() => onClick()}
+                        onClick={() => props.onClick()}
                         variant='outlined'
                         color='primary'>
                         Mint Egg
