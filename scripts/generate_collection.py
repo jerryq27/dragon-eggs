@@ -25,7 +25,7 @@ def generate_collection():
         sequence = calculate_sequence()
         print('Getting image layers..')
         images = get_images(sequence)
-        print(f'Creating collectible #{i}..')
+        print(f'Creating collectible #{i} [{sequence}]..')
         create_collectible(sequence, images)
         print('Done!\n')
 
@@ -50,28 +50,31 @@ def calculate_sequence():
             return dragon_eggs[sequence]
 
 
-# If this rare trait is going to be generated, determine which pattern.
-
-
 def determine_rare_trait():
+    """
+    If this rare trait is going to be generated, determine which pattern.
+    """
+
     # 25% chance of getting an egg with the rare trait: a crack.
     has_rare_trait_num = random.randrange(1, 101)
-    if has_rare_trait_num >= 75:
+    if has_rare_trait_num <= 75:
+        print('No rare trait!')
         return 0
 
     # It does get a rare trait, determine which pattern.
     pattern_num = random.randint(1, 101)
-    # More common pattern 25% chance.
-    if pattern_num >= 25:
+    print(f'Rare trait determinator: {pattern_num}')
+    # More common pattern, bottom crack: 25% chance.
+    if pattern_num <= 25:
         return 1
     elif pattern_num > 25 and pattern_num <= 50:
         return 2
-    # Less common pattern 20% chance.
+    # Less common pattern, top crack: 20% chance.
     elif pattern_num > 50 and pattern_num <= 70:
         return 3
     elif pattern_num > 70 and pattern_num <= 90:
         return 4
-    # Rarest pattern 10% chance.
+    # Rarest pattern, full crack: 10% chance.
     else:
         return 5
 
