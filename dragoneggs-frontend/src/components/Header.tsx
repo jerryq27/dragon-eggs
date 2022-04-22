@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { BigNumber, ethers } from 'ethers';
 import {
     AppBar,
     Button,
@@ -15,31 +14,64 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     header: {},
     title: {
         flexGrow: 1,
+    },
+    connected: {
+        color: 'green',
+        '&:hover': {
+            color: 'red'
+        },
+    },
+    disconnected: {
+
     }
 }));
 
 type HeaderProps = {
+    wallet: string,
+    isConnected: boolean,
     onClick: () => void,
 };
 
 function Header(props: HeaderProps) {
-    const [wallet, setWallet] = useState(null);
-    const [balance, setBalance] = useState(0);
 
+    let [label, setLabel] = useState('Connect Wallet');
     const classes = useStyles();
 
-    const connectWallet = async () => {
-        try {
-            console.log('Connecting...');
-            const [accountWallet] = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
-            setWallet(accountWallet);
-
-            const provider = new ethers.providers.Web3Provider((window as any).ethereum);
-            const accountBalance = await provider.getBalance(accountWallet);
-            setBalance(Number(accountBalance));
+    const determineButtonLabel = (isHovering: boolean) => {
+        if (props.isConnected && isHovering) {
+            setLabel('Disconnect');
         }
-        catch (error) {
-            console.log((error as any).message);
+        else {
+            setLabel('Connected');
+        }
+    };
+
+    const determineButton = () => {
+        if (props.isConnected) {
+            return (
+                <Button
+                    className={classes.connected}
+                    variant='contained'
+                    onMouseEnter={() => determineButtonLabel(true)}
+                    onMouseLeave={() => determineButtonLabel(false)}>
+                    {label}
+                    <WalletIcon style={{ paddingLeft: 5 }} />
+                </Button>
+            );
+        }
+        else {
+            return (
+                <Button
+                    className={classes.disconnected}
+                    variant='contained'
+                    onClick={() => {
+                        props.onClick();
+                        determineButtonLabel(false);
+                    }}>
+                    Connect Wallet
+                    <WalletIcon style={{ paddingLeft: 5 }} />
+                </Button>
+            );
         }
     }
 
@@ -49,10 +81,7 @@ function Header(props: HeaderProps) {
                 <Typography className={classes.title} variant='h5'>
                     Dragon Eggs
                 </Typography>
-                <Button variant='contained' onClick={() => connectWallet()}>
-                    {wallet ? wallet : 'Connect Wallet'}
-                    <WalletIcon style={{ paddingLeft: 5 }} />
-                </Button>
+                {determineButton()}
             </Toolbar>
         </AppBar>
     );
