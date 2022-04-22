@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
     Button,
     Card,
@@ -15,7 +15,6 @@ import BlankEgg from '../img/question-egg.png';
 const useStyles = makeStyles((theme: Theme) => createStyles({
     body: {
         margin: 10,
-        border: '2px solid red',
     },
     content: {
         display: 'flex',
@@ -28,6 +27,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     controls: {
         display: 'flex',
         justifyContent: 'center',
+    },
+    debug: {
+        border: '2px solid red',
     }
 }));
 
@@ -36,7 +38,7 @@ type BodyProps = {
 }
 
 function Body(props: BodyProps) {
-    const [loading, setLoading] = useState(false);
+
     const classes = useStyles();
 
     return (
