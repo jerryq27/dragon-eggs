@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Button,
     Card,
@@ -17,10 +17,11 @@ class App extends React.Component {
     constructor(props: AppProps) {
         super(props);
         this.state = {
-            wallet: null,
+            wallet: '',
             balance: null,
             isConnected: false,
         };
+        this.connectWallet = this.connectWallet.bind(this);
     }
 
     async connectWallet() {
@@ -41,6 +42,7 @@ class App extends React.Component {
         catch (error) {
             console.log((error as any).message);
         }
+        console.log(this.state);
     }
 
     mintEgg() {
@@ -54,7 +56,10 @@ class App extends React.Component {
         if ((window as any).ethereum) {
             return (
                 <div style={{ alignItems: 'center' }}>
-                    <Header onClick={this.connectWallet} />
+                    <Header
+                        wallet={(this as any).state.wallet}
+                        isConnected={(this as any).state.isConnected}
+                        onClick={this.connectWallet} />
                     <Body onClick={this.mintEgg} />
                 </div>
             );
