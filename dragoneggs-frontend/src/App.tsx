@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import Header from './components/Header';
 import Body from './components/Body';
-import { ethers } from 'ethers';
+import { ethers, providers } from 'ethers';
 
 type AppProps = {};
 
@@ -23,25 +23,45 @@ class App extends React.Component {
         };
     }
 
+    checkNetwork = async () => {
+        const provider = new ethers.providers.Web3Provider((window as any).ethereum);
+        const network = await provider.getNetwork();
+
+        return (network.name !== 'homestead' || network.chainId !== 1);
+    }
+
     connectWallet = async () => {
-        try {
-            console.log('Connecting...');
-            const [accountWallet] = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
+        const isTestNetwork = await this.checkNetwork();
 
-            const provider = new ethers.providers.Web3Provider((window as any).ethereum);
-            const accountBalance = await provider.getBalance(accountWallet);
+        if (isTestNetwork) {
+            try {
+                console.log('Connecting..');
+                const provider = new ethers.providers.Web3Provider((window as any).ethereum);
+                await provider.send('eth_requestAccounts', []);
 
-            console.log(`${accountWallet} -> ${accountBalance}`);
-            this.setState({
-                wallet: accountWallet,
-                balance: accountBalance,
-                isConnected: true,
-            });
+                const signer = provider.getSigner();
+                const accountWallet = await signer.getAddress();
+                const accountBalance = await signer.getBalance();
+
+                console.log(`${accountWallet} -> ${accountBalance}`);
+                this.setState({
+                    wallet: accountWallet,
+                    balance: ethers.utils.formatEther(accountBalance),
+                    isConnected: true,
+                });
+            }
+            catch (error) {
+                console.log((error as any).message);
+            }
+            console.log(this.state);
         }
-        catch (error) {
-            console.log((error as any).message);
+        else {
+            alert('To use this dapp, please switch to a test network.');
         }
-        console.log(this.state);
+    }
+
+    diconnectWallet = async () => {
+        console.log('Disconnecting..')
     }
 
     mintEgg() {
@@ -51,7 +71,6 @@ class App extends React.Component {
     render() {
         // [<name of state>, <function to alter state>] = useState(<initialState>)
         // const [name, setName] = useState('example');
-
         if ((window as any).ethereum) {
             return (
                 <div style={{ alignItems: 'center' }}>
