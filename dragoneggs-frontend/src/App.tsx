@@ -21,10 +21,9 @@ class App extends React.Component {
             balance: null,
             isConnected: false,
         };
-        this.connectWallet = this.connectWallet.bind(this);
     }
 
-    async connectWallet() {
+    connectWallet = async () => {
         try {
             console.log('Connecting...');
             const [accountWallet] = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
