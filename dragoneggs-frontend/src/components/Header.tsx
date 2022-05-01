@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     AppBar,
     Button,
@@ -15,65 +15,34 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     title: {
         flexGrow: 1,
     },
-    connected: {
-        color: 'green',
-        '&:hover': {
-            color: 'red'
-        },
-    },
-    disconnected: {
-
-    }
 }));
 
 type HeaderProps = {
     wallet: string,
     isConnected: boolean,
+    loading: boolean,
     onClick: () => void,
 };
 
 function Header(props: HeaderProps) {
-
-    let [label, setLabel] = useState('Connect Wallet');
     const classes = useStyles();
 
-    const determineButtonLabel = (isHovering: boolean) => {
-        if (props.isConnected && isHovering) {
-            setLabel('Disconnect');
-        }
-        else {
-            setLabel('Connected');
-        }
-    };
-
-    const determineButton = () => {
-        if (props.isConnected) {
-            return (
-                <Button
-                    className={classes.connected}
-                    variant='contained'
-                    onMouseEnter={() => determineButtonLabel(true)}
-                    onMouseLeave={() => determineButtonLabel(false)}>
-                    {label}
-                    <WalletIcon style={{ paddingLeft: 5 }} />
-                </Button>
-            );
-        }
-        else {
-            return (
-                <Button
-                    className={classes.disconnected}
-                    variant='contained'
-                    onClick={() => {
-                        props.onClick();
-                        determineButtonLabel(false);
-                    }}>
-                    Connect Wallet
-                    <WalletIcon style={{ paddingLeft: 5 }} />
-                </Button>
-            );
-        }
+    const simpleButton = () => {
+        return (
+            <Button
+                onClick={() => props.onClick()}
+                disabled={props.isConnected}
+                variant='contained'
+                color='primary'
+            >
+                <Typography style={props.isConnected ? { color: 'gray' } : { color: 'white' }}>
+                    {props.isConnected ? 'Connected' : 'Connect Wallet'}
+                </Typography>
+                <WalletIcon style={{ paddingLeft: 5 }} />
+            </Button>
+        );
     }
+    console.log(props);
 
     return (
         <AppBar className={classes.header} position='static' color='primary'>
@@ -81,7 +50,7 @@ function Header(props: HeaderProps) {
                 <Typography className={classes.title} variant='h5'>
                     Dragon Eggs
                 </Typography>
-                {determineButton()}
+                {simpleButton()}
             </Toolbar>
         </AppBar>
     );
