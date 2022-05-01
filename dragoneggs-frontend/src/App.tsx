@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import Header from './components/Header';
 import Body from './components/Body';
-import { ethers, providers } from 'ethers';
+import { ethers } from 'ethers';
 
 type AppProps = {};
 
@@ -20,14 +20,29 @@ class App extends React.Component {
             wallet: '',
             balance: null,
             isConnected: false,
+            loading: false,
         };
     }
+
+    // async componentDidMount() {
+    //     const walletStatus = await this.checkWalletConnectionStatus();
+    //     this.setState({
+    //         isConnected: walletStatus,
+    //     });
+    // }
 
     checkNetwork = async () => {
         const provider = new ethers.providers.Web3Provider((window as any).ethereum);
         const network = await provider.getNetwork();
 
         return (network.name !== 'homestead' || network.chainId !== 1);
+    }
+
+    checkWalletConnectionStatus = async () => {
+        const provider = new ethers.providers.Web3Provider((window as any).ethereum);
+        const accounts = await provider.listAccounts();
+
+        return accounts.length >= 0;
     }
 
     connectWallet = async () => {
@@ -38,6 +53,9 @@ class App extends React.Component {
                 console.log('Connecting..');
                 const provider = new ethers.providers.Web3Provider((window as any).ethereum);
                 await provider.send('eth_requestAccounts', []);
+
+                const accts = await provider.listAccounts();
+                console.log(`Accts: ${accts.length}`);
 
                 const signer = provider.getSigner();
                 const accountWallet = await signer.getAddress();
@@ -51,7 +69,7 @@ class App extends React.Component {
                 });
             }
             catch (error) {
-                console.log((error as any).message);
+                console.log(`Error: ${(error as any).message}`);
             }
             console.log(this.state);
         }
@@ -71,12 +89,19 @@ class App extends React.Component {
     render() {
         // [<name of state>, <function to alter state>] = useState(<initialState>)
         // const [name, setName] = useState('example');
+        const {
+            wallet,
+            isConnected,
+            loading,
+        } = (this as any).state;
+
         if ((window as any).ethereum) {
             return (
                 <div style={{ alignItems: 'center' }}>
                     <Header
-                        wallet={(this as any).state.wallet}
-                        isConnected={(this as any).state.isConnected}
+                        wallet={wallet}
+                        isConnected={isConnected}
+                        loading={loading}
                         onClick={this.connectWallet} />
                     <Body onClick={this.mintEgg} />
                 </div>
