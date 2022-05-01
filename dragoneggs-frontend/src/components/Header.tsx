@@ -2,6 +2,7 @@ import React from 'react';
 import {
     AppBar,
     Button,
+    CircularProgress,
     Toolbar,
     Typography,
     createStyles,
@@ -14,6 +15,18 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     header: {},
     title: {
         flexGrow: 1,
+    },
+    connected: {
+
+    },
+    disconnected: {
+
+    },
+    progress: {
+        color: 'white', // theme.palette.primary.main,
+        position: 'absolute',
+        top: '20%',
+        left: '40%',
     },
 }));
 
@@ -31,18 +44,19 @@ function Header(props: HeaderProps) {
         return (
             <Button
                 onClick={() => props.onClick()}
-                disabled={props.isConnected}
+                disabled={props.isConnected || props.loading}
                 variant='contained'
-                color='primary'
             >
-                <Typography style={props.isConnected ? { color: 'gray' } : { color: 'white' }}>
+                {props.loading ?
+                    <CircularProgress className={classes.progress} size={24} /> : ''
+                }
+                <Typography style={props.isConnected ? { color: 'gray' } : {}}>
                     {props.isConnected ? 'Connected' : 'Connect Wallet'}
                 </Typography>
                 <WalletIcon style={{ paddingLeft: 5 }} />
             </Button>
         );
     }
-    console.log(props);
 
     return (
         <AppBar className={classes.header} position='static' color='primary'>
