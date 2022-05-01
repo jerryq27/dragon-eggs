@@ -16,11 +16,17 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     title: {
         flexGrow: 1,
     },
-    connected: {
+    connectedBtn: {
 
     },
-    disconnected: {
-
+    disconnectedBtn: {
+        backgroundColor: 'green',
+    },
+    connectedTxt: {
+        color: 'gray',
+    },
+    disconnectedTxt: {
+        color: 'white',
     },
     progress: {
         color: 'white', // theme.palette.primary.main,
@@ -43,6 +49,7 @@ function Header(props: HeaderProps) {
     const simpleButton = () => {
         return (
             <Button
+                className={props.isConnected ? classes.connectedBtn : classes.disconnectedBtn}
                 onClick={() => props.onClick()}
                 disabled={props.isConnected || props.loading}
                 variant='contained'
@@ -50,10 +57,10 @@ function Header(props: HeaderProps) {
                 {props.loading ?
                     <CircularProgress className={classes.progress} size={24} /> : ''
                 }
-                <Typography style={props.isConnected ? { color: 'gray' } : {}}>
+                <Typography className={props.isConnected ? classes.connectedTxt : classes.disconnectedTxt}>
                     {props.isConnected ? 'Connected' : 'Connect Wallet'}
                 </Typography>
-                <WalletIcon style={{ paddingLeft: 5 }} />
+                <WalletIcon className={props.isConnected ? classes.connectedTxt : classes.disconnectedTxt} style={{ paddingLeft: 5 }} />
             </Button>
         );
     }
