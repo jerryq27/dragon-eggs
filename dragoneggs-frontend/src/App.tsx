@@ -24,12 +24,16 @@ class App extends React.Component {
         };
     }
 
-    // async componentDidMount() {
-    //     const walletStatus = await this.checkWalletConnectionStatus();
-    //     this.setState({
-    //         isConnected: walletStatus,
-    //     });
-    // }
+    async componentDidMount() {
+        this.setState({
+            loading: true,
+        })
+        const walletStatus = await this.checkWalletConnectionStatus();
+        this.setState({
+            isConnected: walletStatus,
+            loading: false,
+        });
+    }
 
     checkNetwork = async () => {
         const provider = new ethers.providers.Web3Provider((window as any).ethereum);
@@ -42,7 +46,7 @@ class App extends React.Component {
         const provider = new ethers.providers.Web3Provider((window as any).ethereum);
         const accounts = await provider.listAccounts();
 
-        return accounts.length >= 0;
+        return accounts.length > 0;
     }
 
     connectWallet = async () => {
@@ -87,8 +91,6 @@ class App extends React.Component {
     }
 
     render() {
-        // [<name of state>, <function to alter state>] = useState(<initialState>)
-        // const [name, setName] = useState('example');
         const {
             wallet,
             isConnected,
