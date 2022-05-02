@@ -2,6 +2,7 @@ import os
 import random
 import logging
 from PIL import Image
+from alive_progress import alive_bar
 
 # 5 layers x 5 options (color, pattern, background, gloss position, (rare) has crack)
 # Use 5 (0-4) digits to determine which option to use
@@ -14,7 +15,7 @@ logging.basicConfig(
     format='%(name)s:%(levelname)s - %(message)s'
 )
 
-COLLECTION_SIZE = 10
+COLLECTION_SIZE = 300
 dragon_eggs = {}
 egg_metadata = {
     '': '',
@@ -28,7 +29,6 @@ name_rare_trait = ['common', 'uncommon', 'rare', 'super-rare', 'ultra-rare']
 
 def generate_collection():
     # [0-4][0-4][0-4][0-4?]
-    logging.info('Generating collection..\n')
     for i in range(COLLECTION_SIZE):
         logging.info('Calculating unique sequence..')
         sequence = calculate_sequence()
@@ -37,6 +37,7 @@ def generate_collection():
         logging.info(f'Creating collectible #{i + 1} [{sequence}]..')
         create_collectible(sequence, images)
         logging.info('Done!\n')
+        yield
 
 
 def calculate_sequence():
@@ -118,24 +119,27 @@ def create_file_name(sequence):
 
 
 def create_collectible(sequence, images):
-    # collectibles_path = os.path.join(
-    #     os.getcwd(), 'metadata', 'img', 'collectibles'
-    # )
-    # if not os.path.exists(collectibles_path):
-    #     os.mkdir(collectibles_path)
+    collectibles_path = os.path.join(
+        os.getcwd(), 'metadata', 'img', 'collectibles'
+    )
+    if not os.path.exists(collectibles_path):
+        os.mkdir(collectibles_path)
 
-    # layers = [Image.open(x) for x in images]
+    layers = [Image.open(x) for x in images]
 
-    # collectible = layers[0]
-    # for layer in layers[1:]:
-    #     collectible.paste(layer, (0, 0), layer)
+    collectible = layers[0]
+    for layer in layers[1:]:
+        collectible.paste(layer, (0, 0), layer)
 
     collection_name, file_name = create_file_name(sequence)
     logging.info(f"{collection_name} '{file_name}'")
-    # if not os.path.exists(os.path.join(collectibles_path, file_name)):
-    #     collectible.save(os.path.join(collectibles_path, file_name), 'PNG')
-    # else:
-    #     logging.warning(f'Duplicate: {sequence}: {file_name}')
+    if not os.path.exists(os.path.join(collectibles_path, file_name)):
+        collectible.save(os.path.join(collectibles_path, file_name), 'PNG')
+    else:
+        logging.warning(f'Duplicate: {sequence}: {file_name}')
 
 
-generate_collection()
+logging.info('Generating collection..\n')
+with alive_bar(COLLECTION_SIZE, bar='classic') as progress_bar:
+    for i in generate_collection():
+        progress_bar()

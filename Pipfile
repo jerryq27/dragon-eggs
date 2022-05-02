@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 pillow = "*"
 eth-brownie = "*"
+alive-progress = "*"
 
 [dev-packages]
 autopep8 = "*"
