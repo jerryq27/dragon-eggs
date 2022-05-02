@@ -11,7 +11,7 @@ from alive_progress import alive_bar
 logging.basicConfig(
     filename=os.path.join(os.getcwd(), 'dragoneggs.log'),
     filemode='w',
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(name)s:%(levelname)s - %(message)s'
 )
 
@@ -107,7 +107,9 @@ def create_file_name(sequence):
     background = name_background[int(sequence[0])-1]
     color = name_color[int(sequence[1])-1]
     pattern = name_pattern[int(sequence[2])-1]
-    rare_trait = name_rare_trait[int(sequence[3])-1]
+    rare_trait = name_rare_trait[
+        int(sequence[3])] if sequence[3] == '0' else name_rare_trait[int(sequence[3])-1
+    ]
 
     file_name = '-'.join(
         [background, color, pattern, 'egg', rare_trait]
