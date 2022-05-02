@@ -24,7 +24,7 @@ egg_metadata = {
 name_background = ['shadowy', 'mountainous', 'volcanic', 'sea', 'forest']
 name_color = ['orange', 'red', 'green', 'blue', 'purple']
 name_pattern = ['spiral', 'wave', 'swirl', 'stripe', 'diamond']
-name_rare_trait = ['common', 'uncommon', 'rare', 'super-rare', 'ultra-rare']
+name_rare_trait = ['', 'common', 'uncommon', 'rare', 'super-rare', 'ultra-rare']
 
 
 def generate_collection():
@@ -53,6 +53,7 @@ def calculate_sequence():
         sequence = background + color + pattern + crack
 
         if sequence in dragon_eggs:
+            logging.info(f'Skipping duplicate: {sequence}')
             continue
         else:
             unique = True
@@ -108,7 +109,7 @@ def create_file_name(sequence):
     color = name_color[int(sequence[1])-1]
     pattern = name_pattern[int(sequence[2])-1]
     rare_trait = name_rare_trait[
-        int(sequence[3])] if sequence[3] == '0' else name_rare_trait[int(sequence[3])-1
+        int(sequence[3])] if sequence[3] == '0' else name_rare_trait[int(sequence[3])
     ]
 
     file_name = '-'.join(
