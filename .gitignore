@@ -5,6 +5,7 @@ __pycache__
 build/
 reports/
 .vscode/
+*.log
 
 # dependencies
 dragoneggs-frontend/node_modules
@@ -18,6 +19,8 @@ dragoneggs-frontend/coverage
 dragoneggs-frontend/build
 
 # misc
+metadata/img/collectibles
+
 dragoneggs-frontend/.DS_Store
 dragoneggs-frontend/.env.local
 dragoneggs-frontend/.env.development.local
