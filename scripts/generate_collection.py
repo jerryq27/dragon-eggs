@@ -17,10 +17,7 @@ logging.basicConfig(
 
 COLLECTION_SIZE = 300
 dragon_eggs = {}
-egg_metadata = {
-    '': '',
-    '': '',
-}
+
 name_background = ['shadowy', 'mountainous', 'volcanic', 'sea', 'forest']
 name_color = ['orange', 'red', 'green', 'blue', 'purple']
 name_pattern = ['spiral', 'wave', 'swirl', 'stripe', 'diamond']
